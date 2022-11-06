@@ -1,4 +1,4 @@
-package at.spengergasse.domain;
+package at.spengergasse.game;
 
 import static java.lang.Character.toLowerCase;
 
@@ -11,7 +11,8 @@ public class Hangman
     // faults               2
     // MAX FAULT            7
 
-    // private String wordList = "Starwars Spengergasse"
+    // private String wordList = "Starwars Spengergasse ..."
+
     private final String wantedWord;
     private final StringBuilder guessedWord;
     private final StringBuilder guessedCharacters;
@@ -45,21 +46,23 @@ public class Hangman
         return GAME_STATE.KEEP_PLAYING;
     }
 
-    public void guessNextCharacters(char nextCharacter)
+    public void guessNextCharacter(char nextCharacter)
     {
         char nextCharacterLower = toLowerCase(nextCharacter);
 
-        if (!guessedCharacters.toString().contains(String.valueOf(nextCharacterLower)))
+        // if (!guessedCharacters.toString().contains(String.valueOf(nextCharacterLower)))
+        // if (guessedCharacters.toString().indexOf(nextCharacterLower) == -1)
+        if (guessedCharacters.indexOf(String.valueOf(nextCharacterLower)) == -1)
         {
             guessedCharacters.append(nextCharacterLower);
-            int found = checkAndSetCharacters(nextCharacter);
+            int found = checkAndSetCharacter(nextCharacterLower);
 
             if (found == 0)
                 faults++;
         }
     }
 
-    private int checkAndSetCharacters(char nextCharacter)
+    private int checkAndSetCharacter(char nextCharacter)
     {
         int found = 0;
 
@@ -76,7 +79,7 @@ public class Hangman
     }
 
     /*
-    public int checkAndSetCharactersV2(char nextCharacter)
+    public int checkAndSetCharacterV2(char nextCharacter)
     {
         int found = 0;
         int foundAt = 0;
