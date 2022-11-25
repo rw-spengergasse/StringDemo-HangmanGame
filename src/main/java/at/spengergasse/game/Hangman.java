@@ -1,22 +1,26 @@
 package at.spengergasse.game;
 
-import static java.lang.Character.toLowerCase;
+import at.spengergasse.ensurer.Ensurer;
 
 public class Hangman
 {
     // attributes
     // wanted word          "spengergasse"
-    // guessed word         "s********ss"
+    // guessed word         "***********"
     // guessed characters   "s"
-    // faults               2
+    // faults               1
     // MAX FAULT            7
 
     // private String wordList = "Starwars Spengergasse ..."
 
-    private final String wantedWord;
-    private final StringBuilder guessedWord;
-    private final StringBuilder guessedCharacters;
+    public static final String DEFAULT = "spengergasse";
+
+    private String wantedWord;
+    private StringBuilder guessedWord;
+    private StringBuilder guessedCharacters;
     private int faults;
+    private int corrects;
+
     private final int MAX_FAULTS = 7;
 
     enum GAME_STATE
@@ -26,13 +30,13 @@ public class Hangman
 
     public Hangman(String wantedWord)
     {
-        // TODO verify wantedWord (not null, at least n characters)
         String stars = "*".repeat(wantedWord.length());
 
-        this.wantedWord = wantedWord.toLowerCase();
+        this.wantedWord = Ensurer.ensureNotNullNotBlank(wantedWord.toLowerCase(), DEFAULT);
         this.guessedWord = new StringBuilder(stars);
         this.guessedCharacters = new StringBuilder();
         this.faults = 0;
+        this.corrects = 0;
     }
 
     public GAME_STATE getGameState()
@@ -40,7 +44,8 @@ public class Hangman
         if (faults >= MAX_FAULTS)
             return GAME_STATE.LOST;
 
-        if (wantedWord.equals(guessedWord.toString()))
+        // if (wantedWord.equals(guessedWord.toString()))
+        if (corrects == wantedWord.length())
             return GAME_STATE.WON;
 
         return GAME_STATE.KEEP_PLAYING;
@@ -48,52 +53,49 @@ public class Hangman
 
     public void guessNextCharacter(char nextCharacter)
     {
-        char nextCharacterLower = toLowerCase(nextCharacter);
+        char nextCharacterLower = Character.toLowerCase(nextCharacter);
 
-        // if (!guessedCharacters.toString().contains(String.valueOf(nextCharacterLower)))
-        // if (guessedCharacters.toString().indexOf(nextCharacterLower) == -1)
-        if (guessedCharacters.indexOf(String.valueOf(nextCharacterLower)) == -1)
+        if (getGameState() != GAME_STATE.KEEP_PLAYING)
         {
-            guessedCharacters.append(nextCharacterLower);
-            int found = checkAndSetCharacter(nextCharacterLower);
-
-            if (found == 0)
-                faults++;
+            System.out.println("Fehler: ...");
+            return;
         }
+
+        if (containsInGuessed(nextCharacterLower))
+        {
+            System.out.println("Fehler: ...");
+            return;
+        }
+
+        updateGameState(nextCharacterLower);
+
     }
 
-    private int checkAndSetCharacter(char nextCharacter)
+    public boolean containsInGuessed(char nextCharacter)
     {
-        int found = 0;
+        return guessedCharacters.indexOf(String.valueOf(nextCharacter)) >= 0;
+    }
 
+    private void updateGameState(char nextCharacter)
+    {
+        guessedCharacters.append(nextCharacter);
+
+        int oldCorrects = corrects;
+
+        // for each character
         for (int i = 0; i < wantedWord.length(); i++)
         {
+            // matched wanted[i] with nextCharacter?
             if (wantedWord.charAt(i) == nextCharacter)
             {
                 guessedWord.setCharAt(i, nextCharacter);
-                found++;
+                corrects++;
             }
         }
 
-        return found;
+       if (oldCorrects == corrects)
+           faults++;
     }
-
-    /*
-    public int checkAndSetCharacterV2(char nextCharacter)
-    {
-        int found = 0;
-        int foundAt = 0;
-
-        while((foundAt = wantedWord.indexOf(nextCharacter, foundAt)) >= 0 )
-        {
-            guessedWord.setCharAt(foundAt, nextCharacter);
-            found++;
-            foundAt++;
-        }
-
-        return found;
-    }
-    */
 
     public String toString()
     {

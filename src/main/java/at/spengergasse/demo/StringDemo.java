@@ -29,7 +29,7 @@ public class StringDemo
         // Literal Pool
         String s1 = "Rene";
         String s2 = "Rene";
-        String s3 = "Ren" + "e";
+        String s3 = "Ren" + "e" + "r" + "j";
 
         // Literal Pool
         String s4 = "Ren";
@@ -41,14 +41,14 @@ public class StringDemo
         String s5 = new String("Rene");
         String s6 = new String("Rene");
 
-        System.out.println(s1 == s2); // true
-        System.out.println(s1 == s3); // true
-        System.out.println(s1 == s4); // false
-        System.out.println(s1 == s5); // false
-        System.out.println(s5 == s6); // false
+//        System.out.println(s1 == s2); // true
+//        System.out.println(s1 == s3); // true
+//        System.out.println(s1 == s4); // false
+//        System.out.println(s1 == s5); // false
+//        System.out.println(s5 == s6); // false
 
-        System.out.println(s1.equals(s4)); // true
-        System.out.println(s1.equals(s5)); // true
+//        System.out.println(s1.equals(s4)); // true
+//        System.out.println(s1.equals(s5)); // true
 
 
 
@@ -59,32 +59,44 @@ public class StringDemo
 //        System.out.println( "Rene".charAt(0) );
 //        System.out.println( "Rene".contains("Ren") );
 //        System.out.println( "A".compareTo("B") );
-//        System.out.println( "\r\n\ta".isBlank() );
+//        System.out.println( "\r\n\t".isBlank() );
 //        System.out.println( " Rene ".strip() );
-//        System.out.println( "Rene ".repeat(3) );
+//        System.out.println( "Rene".repeat(3) );
 //        System.out.println( "Rene".length() );
 //        System.out.println( "Rene".toUpperCase() );
 //        System.out.println( "Rene".toLowerCase() );
 //        System.out.println( "Rene".indexOf("e") );
 //        System.out.println( "Rene".lastIndexOf("e") );
 //        System.out.println( "Rene".substring(1, 3) );
-//        System.out.println( String.format("|%8s| |%8d| |%10.2f|", "Rene", 10, 3.14) );
+//          String formatted = String.format("|%8s| |%8d| |%10.2f|", "Rene", 10, 3.14);
+//        System.out.printf("|%-8s| |%-8d| |%6.4f|", "Rene", 10, 3.1415923565);
+
+        // primitive Type -> String
+//        String stringX = String.valueOf('x');
+        String stringInt = String.valueOf(42);
+
+        // String -> int,  long
+        int zahl42 = Integer.parseInt("42");
+
+        // String -> Integer
+        Integer zahl42Boxed = Integer.valueOf("42");
+        int zahl42Primitive = zahl42Boxed.intValue();
 
 
 
         // --- String Concatenation Demo ---
 
-        /*
-        long start = System.nanoTime();
-        String str = "Rene";
-        for (int i = 0; i < 100_000; i++)
-        {
-            str = str + i;
-        }
 
-        long end = System.nanoTime();
-        System.out.println("concat time: " + (end-start));
-        */
+//        long start = System.nanoTime();
+//        String str = "Rene";
+//        for (int i = 0; i < 100_000; i++)
+//        {
+//            str = str + "x";
+//        }
+//
+//        long end = System.nanoTime();
+//        System.out.println("concat time: " + (end-start));
+
 
 
 
@@ -93,19 +105,19 @@ public class StringDemo
         // Initial Capacity of 16 characters
         // StringBuilder sb = new StringBuilder();
 
-        /*
-        long start = System.nanoTime();
-        StringBuilder sb = new StringBuilder();
-        sb.append("Rene");
 
-        for (int i = 0; i < 100_000; i++)
-        {
-            sb.append(i);
-        }
+//        long start = System.nanoTime();
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Rene");
+//
+//        for (int i = 0; i < 100_000; i++)
+//        {
+//            sb.append(i);
+//        }
+//
+//        long end = System.nanoTime();
+//        System.out.println("concat time: " + (end-start));
 
-        long end = System.nanoTime();
-        System.out.println("concat time: " + (end-start));
-        */
 
 
 

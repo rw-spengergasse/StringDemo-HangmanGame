@@ -1,6 +1,7 @@
 package at.spengergasse.game;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import static at.spengergasse.game.Hangman.GAME_STATE;
 
