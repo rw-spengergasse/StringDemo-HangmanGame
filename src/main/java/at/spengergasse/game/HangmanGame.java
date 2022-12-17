@@ -1,9 +1,10 @@
 package at.spengergasse.game;
 
-import java.util.Scanner;
-import java.util.logging.Logger;
+import at.spengergasse.game.model.Hangman;
 
-import static at.spengergasse.game.Hangman.GAME_STATE;
+import java.util.Scanner;
+
+import static at.spengergasse.game.model.Hangman.GAME_STATE;
 
 public class HangmanGame
 {

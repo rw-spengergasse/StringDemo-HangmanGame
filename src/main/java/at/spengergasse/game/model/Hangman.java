@@ -1,6 +1,10 @@
-package at.spengergasse.game;
+package at.spengergasse.game.model;
 
-import at.spengergasse.ensurer.Ensurer;
+import at.spengergasse.game.ensurer.Ensurer;
+import at.spengergasse.game.ensurer.HangmanEnsurer;
+
+import static at.spengergasse.game.ensurer.Ensurer.ensureNotNull;
+import static at.spengergasse.game.ensurer.Ensurer.ensureNotNullNotBlank;
 
 public class Hangman
 {
@@ -23,20 +27,43 @@ public class Hangman
 
     private final int MAX_FAULTS = 7;
 
-    enum GAME_STATE
+    public enum GAME_STATE
     {
         WON, LOST, KEEP_PLAYING
     }
 
+    // ctor ------------------------------------------------
     public Hangman(String wantedWord)
     {
-        String stars = "*".repeat(wantedWord.length());
+        this.wantedWord = ensureNotNullNotBlank(wantedWord.toLowerCase(), "wantedWord");
 
-        this.wantedWord = Ensurer.ensureNotNullNotBlank(wantedWord.toLowerCase(), DEFAULT);
-        this.guessedWord = new StringBuilder(stars);
+        this.guessedWord = new StringBuilder("*".repeat(wantedWord.length()));
         this.guessedCharacters = new StringBuilder();
+
         this.faults = 0;
         this.corrects = 0;
+    }
+
+
+    // getter ------------------------------------------------
+    public String getGuessedWord()
+    {
+        return guessedWord.toString();
+    }
+
+    public String getGuessedCharacters()
+    {
+        return guessedCharacters.toString();
+    }
+
+    public int getCorrects()
+    {
+        return corrects;
+    }
+
+    public int getFaults()
+    {
+        return faults;
     }
 
     public GAME_STATE getGameState()
@@ -51,24 +78,20 @@ public class Hangman
         return GAME_STATE.KEEP_PLAYING;
     }
 
+
+
+    // game logic ------------------------------------------------
     public void guessNextCharacter(char nextCharacter)
     {
+        // Gateway Ensurer
+         HangmanEnsurer.ensureValidGameState(this);
+
         char nextCharacterLower = Character.toLowerCase(nextCharacter);
 
-        if (getGameState() != GAME_STATE.KEEP_PLAYING)
-        {
-            System.out.println("Fehler: ...");
-            return;
-        }
-
-        if (containsInGuessed(nextCharacterLower))
-        {
-            System.out.println("Fehler: ...");
-            return;
-        }
-
-        updateGameState(nextCharacterLower);
-
+        if (! containsInGuessed(nextCharacterLower))
+            updateGameState(nextCharacterLower);
+        else
+            System.out.printf("Fehler: Das gleiche Zeichen %c wurde schon eingegeben%n", nextCharacter);
     }
 
     public boolean containsInGuessed(char nextCharacter)
@@ -97,6 +120,8 @@ public class Hangman
            faults++;
     }
 
+
+    // toString ------------------------------------------------
     public String toString()
     {
 
@@ -221,3 +246,27 @@ public class Hangman
                   """;
     }
 }
+
+
+
+//    public void guessNextCharacter(char nextCharacter)
+//    {
+//        char nextCharacterLower = Character.toLowerCase(nextCharacter);
+//
+//        if (getGameState() != GAME_STATE.KEEP_PLAYING)
+//        {
+//            System.out.println("Fehler: ...");
+//            return;
+//        }
+//
+//        if (containsInGuessed(nextCharacterLower))
+//        {
+// System.out.println("Fehler: Das gleiche Zeichen "+ nextCharacter +" wurde schon eingegeben");
+// System.out.println(String.format("Fehler: Das gleiche Zeichen %c wurde schon eingegeben", nextCharacter));
+//            System.out.println("Fehler: ...");
+//            return;
+//        }
+//
+//        updateGameState(nextCharacterLower);
+//
+//    }
